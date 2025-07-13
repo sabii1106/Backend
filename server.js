@@ -1,6 +1,7 @@
 const express = require('express');
  const app = express();
  const port = 8000;
+ require('./server/config/mongoose.config.js'); // Importar la configuración de mongoose
  //app.get('/', function (_, res) {
  //res.send('¡Hola Mundo!');
  //});
@@ -15,7 +16,10 @@ const restaurantes = [
 
 //Middleware para parsear el cuerpo de la solicitud
 app.use(express.json()); // Para parsear JSON en el cuerpo de la solicitud
-//app.use(express.urlencoded({ extended: true })); // Para parsear datos de formularios
+app.use(express.urlencoded({ extended: true })); // Para parsear datos de formularios
+
+const allRestauranteRoutes = require('./server/routes/restaurante.routes');
+allRestauranteRoutes(app); // Registrar las rutas de restaurantes
 
 app.get("/restaurantes", (request, response)=> {
     //Se envia un json, abajo se enviaba en texto plano

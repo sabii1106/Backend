@@ -30,6 +30,12 @@ module.exports.getAllRestaurantes = (request, response) => {
     .catch(error => response.json(error));
     }
 
+module.exports.getRestaurante = (request, response) => {
+    Restaurante.findOne({_id: request.params.id})
+    .then(restaurante => response.json(restaurante))
+    .catch(error => response.json(error));
+};         
+    
 module.exports.updateRestaurante = (request, response) => {
     Restaurante.findOneAndUpdate({_id: request.params.id}, request.body, {new: true})
     .then(updateRestaurante => response.json(updateRestaurante))

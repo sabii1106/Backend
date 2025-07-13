@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const BbName = 'restaurantesDB';
+const BbName = 'SanJose';
 
 //Promesa
 mongoose.connect(`mongodb://127.0.0.1:27017/${BbName}`, {

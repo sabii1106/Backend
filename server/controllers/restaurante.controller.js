@@ -23,3 +23,21 @@ module.exports.CreateRestaurante = (reques, response) => {
         });
     });
 };
+
+module.exports.getAllRestaurantes = (request, response) => {
+    Restaurante.find({})
+    .then(restaurantes => response.json(restaurantes))
+    .catch(error => response.json(error));
+    }
+
+module.exports.updateRestaurante = (request, response) => {
+    Restaurante.findOneAndUpdate({_id: request.params.id}, request.body, {new: true})
+    .then(updateRestaurante => response.json(updateRestaurante))
+    .catch(error => response.json(error));
+};
+
+module.exports.deleteRestaurante = (request, response) => {
+    Restaurante.deleteOne({_id: request.params.id})
+    .then(deleteResponse => response.json(deleteResponse))
+    .catch(error => response.json(error));
+}

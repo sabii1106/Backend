@@ -81,15 +81,15 @@ app.delete("/restaurantes/:id", (request, response)=> {
  });
  */
 
- const cors = requiere('cors');
- const express = requiere('express')
+ //const cors = require('cors');
+ const express = require('express')
  const app = express();
  const port = 8000;
- requiere('./config/mongoose.config')
- app.use(cors()); // Habilitar CORS para todas las rutas
+ require('./server/config/mongoose.config')
+// app.use(cors()); // Habilitar CORS para todas las rutas
  app.use(express.json()); // Middleware para parsear JSON en el cuerpo de la solicitud
  app.use(express.urlencoded({ extended: true })); // Middleware para parsear datos de formularios
- const allRestauranteRoutes = requiere('./routes/restaurante.routes');
+ const allRestauranteRoutes = require('./server/routes/restaurante.routes');
  allRestauranteRoutes(app);
  app.listen(port,()=>{
     console.log("Server corriendo en el puerto: ",port);

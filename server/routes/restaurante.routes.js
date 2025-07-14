@@ -5,7 +5,7 @@ const RestauranteController = require('../controllers/restaurante.controller');
 
 //En terminos generales, como un endpoint, un path (ruta), está el controlador, 
 module.exports = function(app) {
-    app.post("/restaurantes/nuevo", RestauranteController.CreateRestaurante);
+    app.post("/restaurantes", RestauranteController.CreateRestaurante);
     app.get("/restaurantes", RestauranteController.getAllRestaurantes);
     app.get("/restaurantes/:id", RestauranteController.getRestaurante);
     app.put("/restaurantes/:id", RestauranteController.updateRestaurante);

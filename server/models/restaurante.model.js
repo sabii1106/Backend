@@ -33,7 +33,7 @@ const RestaurantesSchema = new mongoose.Schema({
             message: "La URL proporcionada no es válida"
             }
         }
-    }, { timestamps: true,
+    }, { timestamps: false,
         versionKey: false });
 const Restaurantes = mongoose.model('Restaurantes', RestaurantesSchema);
 

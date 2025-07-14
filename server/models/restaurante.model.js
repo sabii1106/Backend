@@ -29,6 +29,7 @@ const RestaurantesSchema = new mongoose.Schema({
         type: String,
         required: [true, "La URL del restaurante es obligatoria"],
         validate: {
+            validator: val => /^(https?:\/\/)?([\w.-]+)+(:\d+)?(\/[^\s]*)?(\?[^\s]*)?$/.test(val),
             validator: val => /^(https?:\/\/)?([\w.-]+)+(:\d+)?(\/[^\s]*)?(\?[^s]*)?$/.test(val),
             message: "La URL proporcionada no es válida"
             }

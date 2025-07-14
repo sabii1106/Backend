@@ -1,5 +1,9 @@
 const RestauranteController = require('../controllers/restaurante.controller');
+//Que es una ruta de express?
+//Cual es la estructura?
+//una ruta, un controlador, un metodo HTTP (GET; POST; PUT; DELETE)
 
+//En terminos generales, como un endpoint, un path (ruta), está el controlador, 
 module.exports = function(app) {
     app.post("/restaurantes", RestauranteController.CreateRestaurante);
     app.get("/restaurantes", RestauranteController.getAllRestaurantes);

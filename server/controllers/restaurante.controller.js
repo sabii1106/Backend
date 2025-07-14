@@ -1,5 +1,5 @@
 const Restaurante = require('../models/restaurante.model');
-
+//En el controlador se defienen los metodos encargador de utilizar los verbos HTTP
 module.exports.CreateRestaurante = (reques, response) => {
     const { nombre, direccion, reputacion, url } = reques.body;
     Restaurante.create({

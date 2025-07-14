@@ -90,3 +90,26 @@ module.exports.getRestaurantesByReputacion = (request, response) => {
         error: error.message
     }));
 };
+
+module.exports.getRestaurantesByReputacionParms = (request, response) => {
+    const { min, max } = request.params;
+
+    // Validación básica de parámetros
+    if (min === undefined || max === undefined) {
+        return response.status(400).json({
+            status: "error",
+            message: "Debe proporcionar los parámetros 'min' y 'max' en la ruta"
+        });
+    }
+
+    Restaurante.find({
+        reputacion: { $gte: Number(min), $lte: Number(max) }
+    })
+    .then(restaurantes => response.json(restaurantes))
+    .catch(error => response.status(400).json({
+        status: "error",
+        message: "Error al obtener restaurantes por reputación",
+        error: error.message
+    }));
+};
+

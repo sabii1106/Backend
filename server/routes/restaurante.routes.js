@@ -11,4 +11,5 @@ module.exports = function(app) {
     app.put("/restaurantes/:id", RestauranteController.updateRestaurante);
     app.delete("/restaurantes/:id", RestauranteController.deleteRestaurante);
     app.get("/restaurantes-reputacion", RestauranteController.getRestaurantesByReputacion); // Ruta
+    app.get("/restaurantes/reputacion/:min/:max", RestauranteController.getRestaurantesByReputacionParms);
 }

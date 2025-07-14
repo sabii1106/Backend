@@ -24,7 +24,7 @@ module.exports.CreateRestaurante = (reques, response) => {
     });
 };
 
-module.exports.getAllRestaurantes = (request, response) => {
+module.exports.getAllRestaurantes = (_, response) => {
     Restaurante.find({})
     .then(restaurantes => response.json(restaurantes))
     .catch(error => response.json(error));

@@ -1,7 +1,7 @@
 const RestauranteController = require('../controllers/restaurante.controller');
 
 module.exports = function(app) {
-    app.post("/restaurantes/neuvo", RestauranteController.CreateRestaurante);
+    app.post("/restaurantes", RestauranteController.CreateRestaurante);
     app.get("/restaurantes", RestauranteController.getAllRestaurantes);
     app.get("/restaurantes/:id", RestauranteController.getRestaurante);
     app.put("/restaurantes/:id", RestauranteController.updateRestaurante);

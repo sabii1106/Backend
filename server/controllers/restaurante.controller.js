@@ -23,8 +23,8 @@ module.exports.CreateRestaurante = (reques, response) => {
         });
     });
 };
-
-module.exports.getAllRestaurantes = (request, response) => {
+//El module.exports hace que pueda ser invocado desde archivos externos.
+module.exports.getAllRestaurantes = (_, response) => {
     Restaurante.find({})
     .then(restaurantes => response.json(restaurantes))
     .catch(error => response.json(error));

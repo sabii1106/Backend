@@ -37,13 +37,16 @@ module.exports.getRestaurante = (request, response) => {
 };         
     
 module.exports.updateRestaurante = (request, response) => {
+    //Con el new:true le decimos que me retorne el restaurante actualizado, si no me envia el restaurante antes de actualizar 
     Restaurante.findOneAndUpdate({_id: request.params.id}, request.body, {new: true})
     .then(updateRestaurante => response.json(updateRestaurante))
     .catch(error => response.json(error));
 };
 
 module.exports.deleteRestaurante = (request, response) => {
-    Restaurante.deleteOne({_id: request.params.id})
+    //Restaurante.deleteOne({_id: request.params.id})
+    Restaurante.findByIdAndDelete({_id: request.params.id})
+    //Esto retorna un objeto con acknolgment y la cantidad de filas borradas, pero nosotros queremos retornar el objeto
     .then(deleteResponse => response.json(deleteResponse))
     .catch(error => response.json(error));
 }

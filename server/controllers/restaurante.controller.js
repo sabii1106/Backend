@@ -1,27 +1,43 @@
+const { request } = require('express');
 const Restaurante = require('../models/restaurante.model');
 //En el controlador se defienen los metodos encargador de utilizar los verbos HTTP
 module.exports.CreateRestaurante = (reques, response) => {
+    //Validar que tenga un nombre y una direccion, que el nombre no exista en la BDD
     const { nombre, direccion, reputacion, url } = reques.body;
-    Restaurante.create({
-        nombre,
-        direccion,
-        reputacion,
-        url
-    })
-    .then(restaurante => {
-        response.status(201).json({
-            status: "ok",
-            message: "Restaurante creado correctamente",
-            data: restaurante
+    Restaurante.findOne({ nombre: nombre.trim() })
+        .then(existing => {
+            if (existing) {
+                response.status(409).json({
+                    status: "error",
+                    message: "El nombre del restaurante ya existe",
+                    error: "Nombre duplicado"
+                });
+                return null; // Detiene la cadena de promesas
+            }
+            return Restaurante.create({
+                nombre,
+                direccion,
+                reputacion,
+                url
+            });
+        })
+        .then(restaurante => {
+            if (restaurante) {
+                response.status(201).json({
+                    status: "ok",
+                    message: "Restaurante creado correctamente",
+                    data: restaurante
+                });
+            }
+            // Si restaurante es null, no hace nada
+        })
+        .catch(error => {
+            response.status(400).json({
+                status: "error",
+                message: "Error al crear el restaurante",
+                error: error.message
+            });
         });
-    })
-    .catch(error => {
-        response.status(400).json({
-            status: "error",
-            message: "Error al crear el restaurante",
-            error: error.message
-        });
-    });
 };
 //El module.exports hace que pueda ser invocado desde archivos externos.
 module.exports.getAllRestaurantes = (_, response) => {
@@ -50,3 +66,27 @@ module.exports.deleteRestaurante = (request, response) => {
     .then(deleteResponse => response.json(deleteResponse))
     .catch(error => response.json(error));
 }
+
+//Se envia 2 parametros de ruta una inferior y la superior y se retorna la lista que lo cumpla 
+
+module.exports.getRestaurantesByReputacion = (request, response) => {
+    const { min, max } = request.query;
+
+    // Validación básica de parámetros
+    if (min === undefined || max === undefined) {
+        return response.status(400).json({
+            status: "error",
+            message: "Debe proporcionar los parámetros 'min' y 'max' en la consulta"
+        });
+    }
+
+    Restaurante.find({
+        reputacion: { $gte: Number(min), $lte: Number(max) }
+    })
+    .then(restaurantes => response.json(restaurantes))
+    .catch(error => response.status(400).json({
+        status: "error",
+        message: "Error al obtener restaurantes por reputación",
+        error: error.message
+    }));
+};

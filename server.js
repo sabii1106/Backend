@@ -1,4 +1,5 @@
-const express = require('express');
+ /*
+ const express = require('express');
  const app = express();
  const port = 8000;
  require('./server/config/mongoose.config.js'); // Importar la configuración de mongoose
@@ -78,3 +79,18 @@ app.delete("/restaurantes/:id", (request, response)=> {
  app.listen(port, function () {
  console.log('server.js escuchando en el siguiente puerto', port);
  });
+ */
+
+ const cors = requiere('cors');
+ const express = requiere('express')
+ const app = express();
+ const port = 8000;
+ requiere('./config/mongoose.config')
+ app.use(cors()); // Habilitar CORS para todas las rutas
+ app.use(express.json()); // Middleware para parsear JSON en el cuerpo de la solicitud
+ app.use(express.urlencoded({ extended: true })); // Middleware para parsear datos de formularios
+ const allRestauranteRoutes = requiere('./routes/restaurante.routes');
+ allRestauranteRoutes(app);
+ app.listen(port,()=>{
+    console.log("Server corriendo en el puerto: ",port);
+ })

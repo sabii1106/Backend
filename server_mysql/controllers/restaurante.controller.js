@@ -25,7 +25,7 @@ module.exports.CreateRestaurante =  async (request, response) => {
 
 module.exports.getAllRestaurantes = async (_, response) => {
     try {
-        const restaurantes = await Restaurantes.find({});
+        const restaurantes = await Restaurantes.findAll();
         response.json(restaurantes);
     } catch (error) {
         response.status(500).json({

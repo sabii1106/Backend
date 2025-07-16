@@ -5,11 +5,7 @@ const Restaurantes = sequelize.define("Restaurantes", {
     _id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
-        validate: {
-            notNull: { msg: "El ID del restaurante es obligatorio" },
-        }
-
+        autoIncrement: true
     },
     nombre: {
         type: DataTypes.STRING,

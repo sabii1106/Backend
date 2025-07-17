@@ -54,3 +54,59 @@ module.exports.getRestaurante = async (request, response) => {
         });
     }
 }
+
+
+
+module.exports.updateRestaurante = async (request, response) => {
+    const { nombre, direccion, reputacion, url } = request.body;
+    try {
+        const [updated] = await Restaurantes.update({
+            nombre,
+            direccion,
+            reputacion,
+            url
+        }, {
+            where: { _id: request.params.id }
+        });
+        if (!updated) {
+            return response.status(404).json({
+                status: "error",
+                message: "Restaurante no encontrado"
+            });
+        }
+        response.json({
+            status: "ok",
+            message: "Restaurante actualizado correctamente"
+        });
+    } catch (error) {
+        response.status(500).json({
+            status: "error",
+            message: "Error al actualizar el restaurante",
+            error: error.message
+        });
+    }
+}
+
+module.exports.deleteRestaurante = async (request, response) => {
+    try {
+        const deleted = await Restaurantes.destroy({
+            where: { _id: request.params.id }
+        });
+        if (!deleted) {
+            return response.status(404).json({
+                status: "error",
+                message: "Restaurante no encontrado"
+            });
+        }
+        response.json({
+            status: "ok",
+            message: "Restaurante eliminado correctamente"
+        });
+    } catch (error) {
+        response.status(500).json({
+            status: "error",
+            message: "Error al eliminar el restaurante",
+            error: error.message
+        });
+    }
+};

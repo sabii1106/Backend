@@ -92,8 +92,12 @@ require('./server_mysql/config/sequelize.config.js'); // Importar la configuraci
  app.use(express.urlencoded({ extended: true })); // Middleware para parsear datos de formularios
  //const allRestauranteRoutes = require('./server/routes/restaurante.routes');
  const allRestauranteRoutes = require('./server_mysql/routes/restaurante.routes');
+ const allTipoComidaRoutes = require('./server_mysql/routes/TipoComida.routes');
+ const allMenuRoutes = require('./server_mysql/routes/menu.routes');
  
  allRestauranteRoutes(app);
+ allTipoComidaRoutes(app);
+ allMenuRoutes(app);
  app.listen(port,()=>{
     console.log("Server corriendo en el puerto: ",port);
  })

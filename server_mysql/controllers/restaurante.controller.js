@@ -38,7 +38,7 @@ module.exports.getAllRestaurantes = async (_, response) => {
 
 module.exports.getRestaurante = async (request, response) => {
     try {
-        const restaurante = await Restaurantes.findOne({_id: request.params.id});
+        const restaurante = await Restaurantes.findByPk(request.params.id);
         if (!restaurante) {
             return response.status(404).json({
                 status: "error",
@@ -66,7 +66,7 @@ module.exports.updateRestaurante = async (request, response) => {
             reputacion,
             url
         }, {
-            where: { _id: request.params.id }
+            where: { id: request.params.id }
         });
         if (!updated) {
             return response.status(404).json({
@@ -90,7 +90,7 @@ module.exports.updateRestaurante = async (request, response) => {
 module.exports.deleteRestaurante = async (request, response) => {
     try {
         const deleted = await Restaurantes.destroy({
-            where: { _id: request.params.id }
+            where: { id: request.params.id }
         });
         if (!deleted) {
             return response.status(404).json({

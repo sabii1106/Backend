@@ -22,21 +22,12 @@ TipoComida.belongsToMany(Restaurantes, {
 Menu.belongsTo(Restaurantes, { foreignKey: 'restauranteId' });
 Menu.belongsTo(TipoComida, { foreignKey: 'tipoComidaId' });
 
+// Relaciones para consultas desde Menu (estas están duplicadas, las eliminamos)
+
 // Exportar los modelos y sequelize
 module.exports = {
     sequelize,
     Restaurantes,
     TipoComida,
     Menu
-};
-
-// Relaciones para consultas desde Menu
-Menu.belongsTo(Restaurantes, { foreignKey: 'restauranteId' });
-Menu.belongsTo(TipoComida, { foreignKey: 'tipoComidaId' });
-
-module.exports = {
-    Restaurantes,
-    TipoComida,
-    Menu,
-    sequelize
 };

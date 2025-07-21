@@ -81,23 +81,59 @@ app.delete("/restaurantes/:id", (request, response)=> {
  });
  */
 
- //const cors = require('cors');
- const express = require('express')
- const app = express();
- const port = 8000;
- ///require('./server/config/mongoose.config')
-require('./server_mysql/config/sequelize.config.js'); // Importar la configuración de Sequelize
-// app.use(cors()); // Habilitar CORS para todas las rutas
- app.use(express.json()); // Middleware para parsear JSON en el cuerpo de la solicitud
- app.use(express.urlencoded({ extended: true })); // Middleware para parsear datos de formularios
- //const allRestauranteRoutes = require('./server/routes/restaurante.routes');
- const allRestauranteRoutes = require('./server_mysql/routes/restaurante.routes');
- const allTipoComidaRoutes = require('./server_mysql/routes/TipoComida.routes');
- const allMenuRoutes = require('./server_mysql/routes/menu.routes');
+const express = require('express');
+const app = express();
+const path = require('path');
+const port = 8000;
+const cors = require('cors');
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Servir archivos estáticos del frontend
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+// Importar la configuración de la base de datos y los modelos
+const { sequelize } = require('./server_mysql/models/index');
+
+// Importar rutas
+const allRestauranteRoutes = require('./server_mysql/routes/restaurante.routes');
+const allTipoComidaRoutes = require('./server_mysql/routes/TipoComida.routes');
+const allMenuRoutes = require('./server_mysql/routes/menu.routes');
  
- allRestauranteRoutes(app);
- allTipoComidaRoutes(app);
- allMenuRoutes(app);
- app.listen(port,()=>{
-    console.log("Server corriendo en el puerto: ",port);
- })
+// Usar rutas
+allRestauranteRoutes(app);
+allTipoComidaRoutes(app);
+allMenuRoutes(app);
+
+// Las rutas API ya están definidas anteriormente
+// Ahora definimos una ruta para la página principal
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
+
+// Middleware de manejo de errores global
+app.use((err, req, res, next) => {
+    console.error('Error en la aplicación:', err);
+    res.status(500).json({
+        status: 'error',
+        message: 'Ha ocurrido un error en el servidor',
+        error: err.message
+    });
+});
+
+// Sincronizar base de datos e iniciar servidor
+sequelize.sync({ force: false }) // Cambiado a false para no eliminar datos en cada reinicio
+    .then(() => {
+        console.log('Base de datos sincronizada correctamente');
+        app.listen(port, () => {
+            console.log(`Servidor corriendo en puerto ${port}`);
+            console.log(`Frontend disponible en http://localhost:${port}`);
+        });
+    })
+    .catch(error => {
+        console.error('Error al sincronizar la base de datos:', error);
+        process.exit(1);
+    });

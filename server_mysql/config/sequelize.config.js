@@ -39,36 +39,3 @@ sequelize.sync({ force: true }).then(() => {
 }).catch((error) => {
     console.error("Error al sincronizar la base de datos", error);
 });
-
-const Menu = sequelize.define("Menu", {
-    enrollmentDate: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false
-    }
-}, {
-    timestamps: false,
-    tableName: 'Menus'
-});
-
-const Restaurantes = require('./restaurante.model');
-const TipoComida = require('./TipoComida.model');
-
-// Definir relaciones many-to-many con claves en minúscula
-Restaurantes.belongsToMany(TipoComida, { 
-    through: Menu,
-    foreignKey: 'restauranteId',
-    otherKey: 'tipoComidaId'
-});
-
-TipoComida.belongsToMany(Restaurantes, { 
-    through: Menu,
-    foreignKey: 'tipoComidaId',
-    otherKey: 'restauranteId'
-});
-
-// Relación directa para acceder desde Menu
-Menu.belongsTo(Restaurantes, { foreignKey: 'restauranteId' });
-Menu.belongsTo(TipoComida, { foreignKey: 'tipoComidaId' });
-
-module.exports = { Restaurantes, TipoComida, Menu };

@@ -1,0 +1,33 @@
+const express = require('express');
+const app = express();
+const port = 8000;
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Importar la configuración de la base de datos y los modelos
+const { sequelize } = require('./server_mysql/models/index');
+
+// Importar rutas
+const restauranteRoutes = require('./server_mysql/routes/restaurante.routes');
+const tipoComidaRoutes = require('./server_mysql/routes/TipoComida.routes');
+const menuRoutes = require('./server_mysql/routes/menu.routes');
+
+// Usar rutas
+restauranteRoutes(app);
+tipoComidaRoutes(app);
+menuRoutes(app);
+
+// Sincronizar base de datos e iniciar servidor
+sequelize.sync({ force: true })
+    .then(() => {
+        console.log('Base de datos sincronizada correctamente');
+        app.listen(port, () => {
+            console.log(`Servidor corriendo en puerto ${port}`);
+        });
+    })
+    .catch(error => {
+        console.error('Error al sincronizar la base de datos:', error);
+        process.exit(1);
+    });

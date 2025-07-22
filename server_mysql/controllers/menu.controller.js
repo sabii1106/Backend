@@ -1,6 +1,4 @@
-const Menu = require('../models/menu.model');
-const Restaurantes = require('../models/restaurante.model');
-const TipoComida = require('../models/TipoComida.model');
+const { Menu, Restaurantes, TipoComida } = require('../models/index');
 
 // Crear una nueva relación entre restaurante y tipo de comida
 module.exports.createMenu = async (request, response) => {
@@ -47,7 +45,10 @@ module.exports.getAllMenus = async (_, response) => {
 module.exports.getTiposComidaByRestaurante = async (request, response) => {
     try {
         const restaurante = await Restaurantes.findByPk(request.params.restauranteId, {
-            include: [{ model: TipoComida }]
+            include: [{ 
+                model: TipoComida,
+                as: 'tiposComida'
+            }]
         });
         if (!restaurante) {
             return response.status(404).json({
@@ -55,7 +56,7 @@ module.exports.getTiposComidaByRestaurante = async (request, response) => {
                 message: "Restaurante no encontrado"
             });
         }
-        response.json(restaurante.TipoComidas);
+        response.json(restaurante.tiposComida);
     } catch (error) {
         response.status(500).json({
             status: "error",
@@ -68,17 +69,42 @@ module.exports.getTiposComidaByRestaurante = async (request, response) => {
 // Obtener restaurantes por tipo de comida
 module.exports.getRestaurantesByTipoComida = async (request, response) => {
     try {
-        const tipoComida = await TipoComida.findByPk(request.params.tipoComidaId, {
-            include: [{ model: Restaurantes }]
+        const tipoComidaId = request.params.id;
+        
+        // Buscar el tipo de comida y sus restaurantes asociados
+        const tipoComida = await TipoComida.findByPk(tipoComidaId, {
+            include: [{
+                model: Restaurantes,
+                as: 'restaurantes',
+                through: { attributes: [] } // Esto evita que se incluyan los atributos de la tabla intermedia
+            }]
         });
+        
         if (!tipoComida) {
             return response.status(404).json({
                 status: "error",
-                message: "Tipo de comida no encontrado"
+                message: "No existe ese tipo de comida con el ID proporcionado"
             });
         }
-        response.json(tipoComida.Restaurantes);
+
+        // Obtener los restaurantes del tipo de comida
+        const restaurantes = tipoComida.restaurantes;
+
+        if (restaurantes.length === 0) {
+            return response.status(200).json({
+                status: "success",
+                message: "No hay restaurantes registrados con este tipo de comida",
+                data: []
+            });
+        }
+
+        response.json({
+            status: "success",
+            message: "Restaurantes encontrados",
+            data: restaurantes
+        });
     } catch (error) {
+        console.error("Error al buscar restaurantes:", error);
         response.status(500).json({
             status: "error",
             message: "Error al obtener los restaurantes por tipo de comida",

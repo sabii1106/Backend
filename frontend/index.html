@@ -25,6 +25,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#relations-section">Relaciones</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#usuarios-section">Usuarios</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -81,7 +84,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Descripción</th>
+                            <th>País de Origen</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -184,8 +187,8 @@
                             <input type="text" class="form-control" id="food-type-name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="food-type-description" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="food-type-description" rows="3" required></textarea>
+                            <label for="food-type-description" class="form-label">País de Origen</label>
+                            <input type="text" class="form-control" id="food-type-description" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
@@ -226,6 +229,79 @@
         </div>
     </div>
 
+    <!-- Sección de Usuarios -->
+    <section id="usuarios-section" style="display: none;">
+        <div class="container my-5">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>Gestión de Usuarios</h2>
+                </div>
+                <div class="col-auto">
+                    <button id="create-usuario-btn" class="btn btn-primary">
+                        <i class="bi bi-person-plus"></i> Nuevo Usuario
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">Lista de Usuarios</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usuarios-table-body">
+                                <tr>
+                                    <td colspan="4" class="text-center">Cargando usuarios...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal de Usuario -->
+        <div class="modal fade" id="usuarioModal" tabindex="-1" aria-labelledby="usuarioModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="usuarioModalLabel">Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="usuario-form">
+                            <input type="hidden" id="usuario-id">
+                            
+                            <div class="mb-3">
+                                <label for="usuario-username" class="form-label">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="usuario-username" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="usuario-email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="usuario-email" required>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary" id="usuario-submit">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-dark text-white text-center py-3">
         <div class="container">
             <p class="m-0">ÑanEC &copy; 2025. Todos los derechos reservados.</p>
@@ -238,6 +314,7 @@
     <script src="js/restaurants.js"></script>
     <script src="js/foodTypes.js"></script>
     <script src="js/relations.js"></script>
+    <script src="js/usuarios.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -102,11 +102,13 @@ const { sequelize } = require('./server_mysql/models/index');
 const allRestauranteRoutes = require('./server_mysql/routes/restaurante.routes');
 const allTipoComidaRoutes = require('./server_mysql/routes/TipoComida.routes');
 const allMenuRoutes = require('./server_mysql/routes/menu.routes');
+const allUsuarioRoutes = require('./server_mysql/routes/usuario.routes');
  
 // Usar rutas
 allRestauranteRoutes(app);
 allTipoComidaRoutes(app);
 allMenuRoutes(app);
+allUsuarioRoutes(app);
 
 // Las rutas API ya están definidas anteriormente
 // Ahora definimos una ruta para la página principal

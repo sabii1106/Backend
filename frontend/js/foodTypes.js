@@ -34,7 +34,7 @@ function displayFoodTypes(foodTypes) {
         row.innerHTML = `
             <td>${id}</td>
             <td>${foodType.nombre}</td>
-            <td>${foodType.descripcion}</td>
+            <td>${foodType.paisOrigen || 'N/A'}</td>
             <td class="action-buttons">
                 <button class="btn btn-sm btn-primary edit-food-type" data-id="${id}">
                     <i class="bi bi-pencil"></i> Editar
@@ -96,7 +96,7 @@ async function saveFoodType(event) {
     
     const foodTypeData = {
         nombre: foodTypeNameInput.value,
-        descripcion: foodTypeDescriptionInput.value
+        paisOrigen: foodTypeDescriptionInput.value
     };
     
     const foodTypeId = foodTypeIdInput.value;
@@ -130,7 +130,7 @@ async function editFoodType(id) {
         // Use _id or id, whichever is available
         foodTypeIdInput.value = foodType._id || foodType.id;
         foodTypeNameInput.value = foodType.nombre;
-        foodTypeDescriptionInput.value = foodType.descripcion;
+        foodTypeDescriptionInput.value = foodType.paisOrigen || '';
         
         document.getElementById('foodTypeModalLabel').textContent = 'Editar Tipo de Comida';
         foodTypeModal.show();

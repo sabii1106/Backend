@@ -44,7 +44,8 @@ module.exports.getAllMenus = async (_, response) => {
 // Obtener tipos de comida de un restaurante específico
 module.exports.getTiposComidaByRestaurante = async (request, response) => {
     try {
-        const restaurante = await Restaurantes.findByPk(request.params.restauranteId, {
+        const restaurante = await Restaurantes.findOne({
+            where: { _id: request.params.restauranteId },
             include: [{ 
                 model: TipoComida,
                 as: 'tiposComida'
@@ -73,7 +74,8 @@ module.exports.getRestaurantesByTipoComida = async (request, response) => {
         console.log(`Buscando restaurantes para tipo de comida ID: ${tipoComidaId}`);
         
         // Buscar el tipo de comida y sus restaurantes asociados
-        const tipoComida = await TipoComida.findByPk(tipoComidaId, {
+        const tipoComida = await TipoComida.findOne({
+            where: { _id: tipoComidaId },
             include: [{
                 model: Restaurantes,
                 as: 'restaurantes',
@@ -115,7 +117,9 @@ module.exports.getRestaurantesByTipoComida = async (request, response) => {
 // Eliminar una relación
 module.exports.deleteMenu = async (request, response) => {
     try {
-        const menu = await Menu.findByPk(request.params.id);
+        const menu = await Menu.findOne({
+            where: { id: request.params.id }
+        });
         if (!menu) {
             return response.status(404).json({
                 status: "error",

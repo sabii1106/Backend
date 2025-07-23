@@ -49,7 +49,10 @@ function displayRelations(relations) {
     
     // Agregar event listeners a los botones
     document.querySelectorAll('.delete-relation').forEach(button => {
-        button.addEventListener('click', (e) => deleteRelation(e.target.dataset.id));
+        button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            deleteRelation(id);
+        });
     });
 }
 
@@ -170,16 +173,23 @@ async function saveRelation(event) {
 
 // Función para eliminar una relación
 async function deleteRelation(id) {
+    if (!id || id === 'undefined') {
+        showNotification('No se puede eliminar esta relación: ID no válido', 'error');
+        return;
+    }
+    
     if (!confirm('¿Está seguro de eliminar esta relación?')) {
         return;
     }
     
     try {
+        console.log(`Eliminando relación con ID: ${id}`);
         await fetchAPI(`/menu/${id}`, 'DELETE');
         showNotification('Relación eliminada correctamente');
         loadRelations();
     } catch (error) {
         console.error('Error al eliminar relación:', error);
+        showNotification('Error al eliminar la relación', 'error');
     }
 }
 

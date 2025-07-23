@@ -78,6 +78,13 @@ module.exports.updateTipoComida = async (request, response) => {
 }
 module.exports.deleteTipoComida = async (request, response) => {
     try {
+        // Primero, eliminar las relaciones en la tabla Menu
+        const { Menu } = require('../models/index');
+        await Menu.destroy({
+            where: { tipoComidaId: request.params.id }
+        });
+        
+        // Luego, eliminar el tipo de comida
         const tipoComida = await TipoComida.findOne({ where: { _id: request.params.id } });
         if (!tipoComida) {
             return response.status(404).json({
@@ -91,6 +98,7 @@ module.exports.deleteTipoComida = async (request, response) => {
             message: "Tipo de comida eliminado correctamente"
         });
     } catch (error) {
+        console.error("Error al eliminar tipo de comida:", error);
         response.status(500).json({
             status: "error",
             message: "Error al eliminar el tipo de comida",

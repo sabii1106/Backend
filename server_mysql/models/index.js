@@ -4,17 +4,20 @@ const sequelize = require('../config/sequelize.config');
 const Restaurantes = require('./restaurante.model');
 const TipoComida = require('./TipoComida.model');
 const Menu = require('./menu.model');
+const Usuario = require('./usuario.model');
 
 // Definir las asociaciones muchos a muchos
 Restaurantes.belongsToMany(TipoComida, { 
     through: Menu,
     foreignKey: 'restauranteId',
+    otherKey: 'tipoComidaId',
     as: 'tiposComida'
 });
 
 TipoComida.belongsToMany(Restaurantes, { 
     through: Menu,
     foreignKey: 'tipoComidaId',
+    otherKey: 'restauranteId',
     as: 'restaurantes'
 });
 
@@ -22,12 +25,11 @@ TipoComida.belongsToMany(Restaurantes, {
 Menu.belongsTo(Restaurantes, { foreignKey: 'restauranteId' });
 Menu.belongsTo(TipoComida, { foreignKey: 'tipoComidaId' });
 
-// Relaciones para consultas desde Menu (estas están duplicadas, las eliminamos)
-
 // Exportar los modelos y sequelize
 module.exports = {
     sequelize,
     Restaurantes,
     TipoComida,
-    Menu
+    Menu,
+    Usuario
 };
